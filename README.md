@@ -1,0 +1,4 @@
+# EFI
+处理器：i5-12490F
+主板：JGINYUE H610M-D PLUS WIFI
+显卡：AMD Radeon RX 5700
