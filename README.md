@@ -17,6 +17,8 @@
 ## 支持的系统版本
 - macOS Sequoia
 
+无线网卡需要打补丁
+https://github.com/JeoJay127/OCLP-X
   
 ## 使用说明
 1. 确保你的硬件配置与本EFI兼容
