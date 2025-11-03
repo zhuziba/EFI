@@ -15,9 +15,9 @@
 | 声卡 | 请在使用前更新此处信息 | - |
 
 ## 支持的系统版本
-- macOS Ventura
-- macOS Sonoma
+- macOS Sequoia
 
+  
 ## 使用说明
 1. 确保你的硬件配置与本EFI兼容
 2. 根据你的具体硬件，可能需要修改config.plist中的相关设置
