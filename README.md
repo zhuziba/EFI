@@ -143,20 +143,6 @@ OpenCanopy 图形界面资源：主题图标（GoldenGate / Chardonnay / Syrah �
 **DeviceProperties**
 - `PciRoot(0x0)/Pci(0x1f,0x3)` → `layout-id=11`（板载声卡）
 
----
-
-## 5. 本次变更记录（2026-10-18）
-
-对比当前 `config.plist` 与 `oldConfig.plist`（= `config.backup-20261018.plist`）：
-
-| 变更项 | 旧值 | 新值 | 说明 |
-|--------|------|------|------|
-| 新增 kext | — | `WhateverGreen.kext` 1.7.1 | 启用显卡补丁链 |
-| `boot-args` | `debug=0x100 keepsyms=1 itlwm_he=1` | `itlwm_he=1 agdpmod=pikera` | 移除调试参数（已稳定），新增 AMD 显卡补丁 |
-| `Timeout` | 5 秒 | 3 秒 | 缩短引导等待 |
-| MLB（三码） | `F5K006902QXK3F7CB` | `F5K024501QXK3F7FB` | 更新机型序列 |
-
-> 若新配置出现问题，可用 `config.backup-20261018.plist` 回退。
 
 ---
 
