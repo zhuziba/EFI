@@ -1,0 +1,48 @@
+name: Update EFI drivers
+
+on:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-efi-drivers
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Update EFI drivers and kexts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/update_efi_drivers.py
+
+      - name: Check patch formatting
+        run: git diff --check
+
+      - name: Commit and push updates
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No EFI updates to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add EFI scripts/efi-versions.json
+          git commit -m "chore: update EFI drivers"
+          git push origin HEAD:main

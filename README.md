@@ -1,6 +1,6 @@
 # 黑苹果 EFI 配置与维护说明
 
-更新日期：2026-11-22
+更新日期：2026-11-23
 
 ## 1. 文档用途
 
@@ -280,16 +280,16 @@ csrutil status
 
 ## 8. 驱动与 OpenCore 更新流程
 
-1. **先备份当前可启动的整份 `EFI/OC`**，不要只备份 `config.plist`。
-2. 确认新版本支持 macOS Sequoia 和当前 OpenCore 版本。
-3. 每次只更新一组驱动，避免同时更新多个组件后无法定位问题。
-4. ForbiddenItlwm 与 BTLEAdvFixup 按配套版本一起评估。
-5. 检查 Kext 文件名、版本和 `Kernel/Add` 条目是否一致。
-6. 运行 `plutil -lint` 和匹配版本的 `ocvalidate`。
-7. 重启后验证 Wi-Fi、蓝牙、AirDrop/AWDL、有线网络、音频和睡眠唤醒。
-8. 确认稳定后再清理临时安装包；旧版本至少保留一个已验证可用的回滚副本。
+仓库中的 GitHub Actions 每周检查一次上游 Release，也可在 Actions 页面手动运行。发现更新后，工作流会直接提交到 `main`，不会自动写入或挂载本机 EFI 分区。
 
-不要为了让版本号更新而盲目升级。当前已验证稳定的组合优先于未经验证的新版本。
+仓库的 Actions 工作流权限需要允许写入内容，且 `main` 分支保护规则必须允许 Actions 直接推送；否则自动提交步骤会失败。
+
+- OpenCore 更新时，`BOOTx64.efi`、`OpenCore.efi`、上游提供的 `Drivers` 和 `Resources` 作为同一版本整体更新；提交前使用该版本的 `ocvalidate` 检查 `config.plist`。上游包未提供的已配置驱动（例如 `HfsPlus.efi`）会保留现有文件。
+- ForbiddenItlwm 与 BTLEAdvFixup 从同一个 Sequoia 发布包同步更新，并校验上游提供的 SHA-256。
+- 其他受支持的 Kext 使用各自上游的 Release 包；不会降级已安装的较新版本。
+- `USBToolBox.kext` 会随其 Release 更新。`UTBDefault.kext` 是当前 USB 映射配置，不属于通用驱动更新，工作流会保留它不变。
+
+自动更新不能替代硬件上的启动与功能验证。将仓库内容复制到 EFI 分区前，仍应备份整份可启动 EFI，并验证 Wi-Fi、蓝牙、AirDrop/AWDL、有线网络、音频、USB 和睡眠唤醒；至少保留一个已验证可用的回滚副本。
 
 ## 9. 备份与回滚
 
